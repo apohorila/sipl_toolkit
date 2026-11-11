@@ -1,0 +1,5 @@
+begin
+    X = 5;
+    if X > 0 then
+        Y := 10
+end

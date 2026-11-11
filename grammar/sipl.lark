@@ -1,0 +1,49 @@
+start: prog
+
+prog: "begin" stmt "end"
+
+?stmt: sequence
+
+?sequence: statement (";" statement)*
+
+?statement: VAR ":=" aexp                  -> assign_stmt
+          | "if" bexp "then" statement "else" statement -> if_stmt
+          | "while" bexp "do" statement    -> while_stmt
+          | "begin" stmt "end"             -> block_stmt
+          | "skip"                         -> skip_stmt
+
+
+?aexp: add_sub
+
+?add_sub: mult
+        | add_sub "+" mult                 -> add_exp
+        | add_sub "-" mult                 -> sub_exp
+
+?mult: primary_aexp
+     | mult "*" primary_aexp               -> mult_exp
+
+?primary_aexp: NUM                         -> num_exp
+            | VAR                          -> var_exp
+            | "(" aexp ")"                 -> par_aexp
+
+
+?bexp: or_bexp
+
+?or_bexp: not_bexp
+        | or_bexp "\\/" not_bexp           -> or_bexp_op
+
+?not_bexp: comp_bexp
+         | "~" comp_bexp                   -> neg_bexp
+
+?comp_bexp: aexp "=" aexp                  -> eq_bexp
+          | aexp ">" aexp                  -> gr_bexp
+          | aexp ">=" aexp                 -> gre_bexp
+          | "(" bexp ")"                   -> par_bexp
+
+
+VAR: /[a-zA-Z_][a-zA-Z0-9_]*/
+NUM: /-?[0-9]+/
+
+
+%import common.WS
+%ignore WS

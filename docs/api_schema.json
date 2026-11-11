@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SIPL CLI JSON Contracts",
+  "definitions": {
+    "SourceSpan": {
+      "type": ["object", "null"],
+      "properties": {
+        "line": { "type": "integer" },
+        "column": { "type": "integer" },
+        "end_line": { "type": ["integer", "null"] },
+        "end_column": { "type": ["integer", "null"] }
+      },
+      "required": ["line", "column"]
+    },
+    "CheckSuccess": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["ok"] },
+        "message": { "type": "string" }
+      },
+      "required": ["status", "message"]
+    },
+    "CheckError": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["error"] },
+        "line": { "type": "integer" },
+        "column": { "type": "integer" },
+        "message": { "type": "string" }
+      },
+      "required": ["status", "line", "column", "message"]
+    },
+    "RunResult": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["ok"] },
+        "final_state": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "steps": { "type": "integer" }
+      },
+      "required": ["status", "final_state", "steps"]
+    }
+  }
+}
